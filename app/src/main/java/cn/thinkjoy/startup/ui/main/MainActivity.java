@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ import cn.thinkjoy.startup.util.APPPreferenceUtil;
 import cn.thinkjoy.startup.util.ConstantSet;
 import cn.thinkjoy.startup.util.DateUtils;
 import cn.thinkjoy.startup.util.JsonUtil;
+import cn.thinkjoy.startup.util.android.log.Log;
 import cn.thinkjoy.startup.widget.FragmentTabHost;
 
 /**
@@ -30,10 +32,16 @@ public class MainActivity extends BaseActivity {
     /**
      * 切换tab配置
      */
-    public static Class mFragmentArray[] = {WorkPageFragment.class, MaterialPageFragment.class,MsgPageFragment.class,
+    public static Class mFragmentArray[] = {PlanPageFragment.class, GoalPageFragment.class,
+            RecordPageFragment.class,
             MePageFragment.class};
-    private String mTextArray[] = {"计划", "目标","记录", "我"};
-    private int mImageArray[] = {R.drawable.home_tab, R.drawable.contact_tab,R.drawable.msg_tab, R.drawable.mine_tab};
+    private String mTextArray[] = {getString(R.string.plan),
+            getString(R.string.goal),
+            getString(R.string.record),
+            getString(R.string.me)};
+
+    private int mImageArray[] = {R.drawable.home_tab, R.drawable.contact_tab,
+            R.drawable.msg_tab, R.drawable.mine_tab};
 
     private TextView tv_new_msg_count;
 
@@ -52,12 +60,27 @@ public class MainActivity extends BaseActivity {
         mTabHost = (FragmentTabHost) findViewById(R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         Bundle bundle = new Bundle();
-        mTabHost.addTab(mTabHost.newTabSpec(WorkPageFragment.TAG).setIndicator(createIndicatorView(0)), mFragmentArray[0], bundle);
-        mTabHost.addTab(mTabHost.newTabSpec(MaterialPageFragment.TAG).setIndicator(createIndicatorView(1)), mFragmentArray[1], bundle);
-        mTabHost.addTab(mTabHost.newTabSpec(MsgPageFragment.TAG).setIndicator(createIndicatorView(2)), mFragmentArray[2], bundle);
+        mTabHost.addTab(mTabHost.newTabSpec(PlanPageFragment.TAG).setIndicator(createIndicatorView(0)), mFragmentArray[0], bundle);
+        mTabHost.addTab(mTabHost.newTabSpec(GoalPageFragment.TAG).setIndicator(createIndicatorView(1)), mFragmentArray[1], bundle);
+        mTabHost.addTab(mTabHost.newTabSpec(RecordPageFragment.TAG).setIndicator(createIndicatorView(2)), mFragmentArray[2], bundle);
         mTabHost.addTab(mTabHost.newTabSpec(MePageFragment.TAG).setIndicator(createIndicatorView(3)), mFragmentArray[3], new Bundle());
         mTabHost.getTabWidget().setDividerDrawable(R.color.transparent);
 
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                Log.e(">>>>>>>",tabId);
+                if(tabId.equals(PlanPageFragment.TAG)){
+                    title.setText(getString(R.string.plan));
+                }else if(tabId.equals(GoalPageFragment.TAG)){
+                    title.setText(getString(R.string.goal));
+                }else if(tabId.equals(RecordPageFragment.TAG)){
+                    title.setText(getString(R.string.record));
+                }else{
+                    title.setText( getString(R.string.me));
+                }
+            }
+        });
     }
 
     private View createIndicatorView(int index) {
@@ -106,7 +129,6 @@ public class MainActivity extends BaseActivity {
                     // 插入离线数据
                     ContactsDao dao = new ContactsDao(MyApplication.getAppContext());
                     dao.insertContactsInfo(contactsBean);
-
                 }
             }
         }).start();

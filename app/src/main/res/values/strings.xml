@@ -355,5 +355,9 @@
 }</string>
 
     <string name="test_json"></string>
+    <string name="plan">计划</string>
+    <string name="goal">目标</string>
+    <string name="record">记录</string>
+    <string name="me">我</string>
 
 </resources>
