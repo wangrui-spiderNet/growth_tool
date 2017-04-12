@@ -14,3 +14,5 @@ https://github.com/JakeWharton/gradle-android-test-plugin
 https://github.com/abdyer/android-test-demo
 https://github.com/peterfriese/RobolectricDemoProject
 http://blog.csdn.net/bscbscbscbsc/article/details/68491305
+
+关注AI世代（微信号：tencentAI），回复“100AI”可获得该报告原文下载。
